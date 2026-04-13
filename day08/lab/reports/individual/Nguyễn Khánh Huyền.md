@@ -1,9 +1,8 @@
 # Báo Cáo Cá Nhân — Lab Day 08: RAG Pipeline
 
 **Họ và tên:** Nguyễn Khánh Huyền  
-**Vai trò trong nhóm:** Tech Lead / Documentation Support  
-**Ngày nộp:** [Điền ngày nộp]  
-**Độ dài yêu cầu:** 500–800 từ
+**Vai trò trong nhóm:** Tech Lead
+**Ngày nộp:** [13.04.2026]
 
 ---
 
