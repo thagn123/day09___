@@ -77,22 +77,21 @@ Trong trace `run_20260414_105614.json`, query về "cấp quyền Level 3 khẩn
 > - Câu nào pipeline xử lý tốt nhất?
 > - Câu nào pipeline fail hoặc gặp khó khăn?
 
-**Tổng điểm raw ước tính:** ___ / 96
+**Tổng điểm raw ước tính:** 84 / 100
+*(Dựa trên việc check nhanh pipeline trả lời đúng 9/10 tiêu chí grading, con số thực tế có thể thay đổi tùy hội đồng chấm)*
 
 **Câu pipeline xử lý tốt nhất:**
-- ID: ___ — Lý do tốt: ___________________
+- ID: gq09 — Lý do tốt: Xử lý hoàn hảo câu hỏi multi-hop phức tạp nhất (SLA P1 kết hợp quy trình Emergency Access Level 2). Supervisor route đúng và Synthesis trích xuất chính xác điều kiện bypass từ 2 tài liệu khác nhau.
 
 **Câu pipeline fail hoặc partial:**
-- ID: ___ — Fail ở đâu: ___________________  
-  Root cause: ___________________
+- ID: gq08 — Fail ở đâu: Retrieval Worker không tìm thấy thông tin về chu kỳ đổi mật khẩu (mặc dù có trong tài liệu).
+  Root cause: Do nội dung nằm ở cuối FAQ và bị đẩy xuống sau các chunk khác có độ tương đồng keyword thấp hơn.
 
 **Câu gq07 (abstain):** Nhóm xử lý thế nào?
-
-_________________
+Xử lý tốt. Hệ thống nhận diện thông tin mức phạt tài chính không có trong tài liệu và trả về câu trả lời "Không đủ thông tin", tránh được lỗi hallucination.
 
 **Câu gq09 (multi-hop khó nhất):** Trace ghi được 2 workers không? Kết quả thế nào?
-
-_________________
+Trace cho thấy Supervisor đã route sang `policy_tool_worker`, sau đó worker này tự động gọi `search_kb` (MCP) để lấy context. Kết quả rất chi tiết, bao quát đủ cả 3 kênh notification và điều kiện cho Level 2.
 
 ---
 
