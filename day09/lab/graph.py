@@ -106,13 +106,20 @@ def supervisor_node(state: AgentState) -> AgentState:
     risk_high = False
 
     # Ví dụ routing cơ bản — nhóm phát triển thêm:
-    policy_keywords = ["hoàn tiền", "refund", "flash sale", "license", "cấp quyền", "access", "level 3"]
+    policy_keywords = ["hoàn tiền", "refund", "flash sale", "license", "cấp quyền", "access", "level 3", "chính sách"]
+    retrieval_keywords = ["p1", "escalation", "sla", "ticket", "jira", "thời gian", "phản hồi", "quy trình"]
     risk_keywords = ["emergency", "khẩn cấp", "2am", "không rõ", "err-"]
 
     if any(kw in task for kw in policy_keywords):
         route = "policy_tool_worker"
         route_reason = f"task contains policy/access keyword"
         needs_tool = True
+    elif any(kw in task for kw in retrieval_keywords):
+        route = "retrieval_worker"
+        route_reason = "task contains SLA/Ticket keyword"
+    else:
+        route = "retrieval_worker"
+        route_reason = "default route"
 
     if any(kw in task for kw in risk_keywords):
         risk_high = True
