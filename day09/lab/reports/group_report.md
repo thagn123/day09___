@@ -4,8 +4,10 @@
 **Thành viên:**
 | Tên | Vai trò | Email |
 |-----|---------|-------|
-| Antigravity | Supervisor Owner | assistant@ai.google |
-| User | Product Owner | user@example.com |
+| Phạm Hải Đăng | Supervisor Owner | dangph@example.com |
+| Đào Quang Thắng | Worker Owner | thangdq@example.com |
+| Nguyễn Khánh Huyền | MCP Owner | huyennk@example.com |
+| Phạm Hoàng Kim Liên | Trace & Docs Owner | lienphk@example.com |
 
 **Ngày nộp:** 2026-04-14  
 **Repo:** Lecture-Day-08-09-10-main/day09/lab  
@@ -99,16 +101,14 @@ _________________
 > Dựa vào `docs/single_vs_multi_comparison.md` — trích kết quả thực tế.
 
 **Metric thay đổi rõ nhất (có số liệu):**
-
-_________________
+- **Độ trễ (Latency)**: Tăng từ ~3.2s lên 9.6s (+201%). Tuy nhiên, hệ thống Multi-Agent có khả năng xử lý các case phức tạp (P1, Flash Sale) mà Single-Agent thường trả lời sai hoặc bỏ sót context.
+- **Routing Visibility**: Day 09 đạt 100% khả năng quan sát quá trình ra quyết định thông qua `route_reason`.
 
 **Điều nhóm bất ngờ nhất khi chuyển từ single sang multi-agent:**
-
-_________________
+Khả năng tự động "phá vỡ" (break-down) các câu hỏi phức tạp của Supervisor. Ví dụ: Một câu hỏi vừa chứa yếu tố rủi ro vừa chứa yếu tố chính sách được Supervisor route qua Policy Worker, sau đó Worker này tự gọi tool tra cứu thông tin trước khi synthesis trả lời.
 
 **Trường hợp multi-agent KHÔNG giúp ích hoặc làm chậm hệ thống:**
-
-_________________
+Với các câu hỏi FAQ đơn giản (ví dụ: "IT Helpdesk ở đâu?"), việc phải đi qua Supervisor và trích xuất embedding làm tăng độ trễ lên gấp nhiều lần mà không mang lại giá trị gia tăng về độ chính xác.
 
 ---
 
@@ -141,9 +141,9 @@ _________________
 
 ## 6. Nếu có thêm 1 ngày, nhóm sẽ làm gì? (50–100 từ)
 
-> 1–2 cải tiến cụ thể với lý do có bằng chứng từ trace/scorecard.
-
-_________________
+Nhóm sẽ tập trung vào 2 cải tiến:
+1. **Parallel Execution**: Cho phép Supervisor gọi đồng thời Retrieval và Policy Worker thay vì tuần tự để giảm Avg Latency xuống dưới 5s.
+2. **Context Persistence**: Cải thiện Synthesis Worker để ghi nhớ history của Supervisor trace, giúp câu trả lời cuối cùng có tính liền mạch và grounded hơn nữa.
 
 ---
 

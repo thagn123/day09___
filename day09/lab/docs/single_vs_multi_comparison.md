@@ -17,12 +17,12 @@
 
 | Metric | Day 08 (Single Agent) | Day 09 (Multi-Agent) | Delta | Ghi chú |
 |--------|----------------------|---------------------|-------|---------|
-| Avg confidence | 0.85 (est) | 0.376 | -0.474 | Day 09 confidence score is conservative |
-| Avg latency (ms) | 4500 (est) | 10556 | +6056ms | Multi-agent + supervisor routing adds overhead |
-| Abstain rate (%) | 10% | 5% | -5% | Multi-hop reasoning reduces false abstains |
-| Multi-hop accuracy | 60% | 85% | +25% | Worker specialization helps complex reasoning |
-| Routing visibility | ✗ Không có | ✓ Có route_reason | N/A | Dễ dàng theo dõi luồng suy nghĩ của hệ thống |
-| Debug time (estimate) | 20 phút | 5 phút | -15 phút | Rút ngắn thời gian nhờ trace JSON chi tiết |
+| Avg confidence | 0.85 (est) | 0.413 | -0.437 | Day 09 confidence score is conservative |
+| Avg latency (ms) | 4500 (est) | 9637 | +5137ms | Multi-agent overhead (Supervisor + Workers) |
+| Abstain rate (%) | 10% | 5% | -5% | Reduced false abstains via multi-hop |
+| Multi-hop accuracy | 60% | 85% (est) | +25% | Worker specialization helps reasoning |
+| Routing visibility | ✗ Không có | ✓ Có route_reason | N/A | Dễ debug và audit |
+| Debug time (est) | 20 phút | 5 phút | -15 phút | Rút ngắn nhờ Trace JSON chi tiết |
 | ___________________ | ___ | ___ | ___ | |
 
 > **Lưu ý:** Nếu không có Day 08 kết quả thực tế, ghi "N/A" và giải thích.
@@ -130,17 +130,19 @@ _________________
 
 > **Multi-agent tốt hơn single agent ở điểm nào?**
 
-1. ___________________
-2. ___________________
+1. **Độ chính xác và Chuyên môn hóa**: Tách biệt rõ ràng giữa retrieval thông thường và xử lý chính sách (Policy/Tool).
+2. **Khả năng quan sát (Observability)**: Mọi bước đi đều có trace và route_reason, giúp minh bạch hóa quy trình ra quyết định.
+3. **Mở rộng linh hoạt (Scalability)**: Dễ dàng thêm tool mới qua MCP mà không làm loãng prompt chính.
 
 > **Multi-agent kém hơn hoặc không khác biệt ở điểm nào?**
 
-1. ___________________
+1. **Độ trễ (Latency)**: Cao hơn đáng kể (~2-3 lần) do quy trình tuần tự qua nhiều agent.
+2. **Chi phí (Cost)**: Tiêu tốn nhiều token LLM hơn cho bước Supervisor và Synthesis.
 
 > **Khi nào KHÔNG nên dùng multi-agent?**
 
-_________________
+Khi bài toán cực kỳ đơn giản, chỉ yêu cầu tra cứu thông tin tĩnh từ 1 nguồn duy nhất và đòi hỏi thời gian phản hồi cực nhanh (real-time).
 
 > **Nếu tiếp tục phát triển hệ thống này, nhóm sẽ thêm gì?**
 
-_________________
+Thêm **Memory Agent** để ghi nhớ ngữ cảnh từ các câu hỏi trước đó và **Self-Correction Worker** để tự kiểm tra lỗi logic trước khi synthesis.
