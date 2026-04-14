@@ -140,9 +140,6 @@ def tool_search_kb(query: str, top_k: int = 3) -> dict:
     Hiện tại: Delegate sang retrieval worker.
     """
     try:
-        # Tái dùng retrieval logic từ workers/retrieval.py
-        import sys
-        sys.path.insert(0, os.path.dirname(__file__))
         from workers.retrieval import retrieve_dense
         chunks = retrieve_dense(query, top_k=top_k)
         sources = list({c["source"] for c in chunks})

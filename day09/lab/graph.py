@@ -15,7 +15,7 @@ from datetime import datetime
 from typing import TypedDict, Literal, Optional
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv()  # Nạp OPENAI_API_KEY hoặc GOOGLE_API_KEY từ .env
 
 # Uncomment nếu dùng LangGraph:
 # from langgraph.graph import StateGraph, END
@@ -33,6 +33,7 @@ class AgentState(TypedDict):
     risk_high: bool                     # True → cần HITL hoặc human_review
     needs_tool: bool                    # True → cần gọi external tool qua MCP
     hitl_triggered: bool                # True → đã pause cho human review
+    timestamp: str                      # ISO format (bắt buộc theo SCORING.md)
 
     # Worker outputs
     retrieved_chunks: list              # Output từ retrieval_worker
@@ -73,6 +74,7 @@ def make_initial_state(task: str) -> AgentState:
         "supervisor_route": "",
         "latency_ms": None,
         "run_id": f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+        "timestamp": datetime.now().isoformat(),
     }
 
 
@@ -105,21 +107,21 @@ def supervisor_node(state: AgentState) -> AgentState:
     needs_tool = False
     risk_high = False
 
-    # Ví dụ routing cơ bản — nhóm phát triển thêm:
+    # logic routing nâng cao:
     policy_keywords = ["hoàn tiền", "refund", "flash sale", "license", "cấp quyền", "access", "level 3", "chính sách"]
-    retrieval_keywords = ["p1", "escalation", "sla", "ticket", "jira", "thời gian", "phản hồi", "quy trình"]
+    retrieval_keywords = ["p1", "escalation", "sla", "ticket", "jira", "thời gian", "phản hồi", "quy trình", "sự cố", "đăng nhập", "remote", "thử việc", "probation"]
     risk_keywords = ["emergency", "khẩn cấp", "2am", "không rõ", "err-"]
 
     if any(kw in task for kw in policy_keywords):
         route = "policy_tool_worker"
-        route_reason = f"task contains policy/access keyword"
         needs_tool = True
+        route_reason = "task contains policy/access keyword -> using policy_tool + MCP"
     elif any(kw in task for kw in retrieval_keywords):
         route = "retrieval_worker"
-        route_reason = "task contains SLA/Ticket keyword"
+        route_reason = "task contains SLA/Technical keyword -> using retrieval_worker"
     else:
         route = "retrieval_worker"
-        route_reason = "default route"
+        route_reason = "defaulting to retrieval_worker for general knowledge lookup"
 
     if any(kw in task for kw in risk_keywords):
         risk_high = True
@@ -185,6 +187,7 @@ def human_review_node(state: AgentState) -> AgentState:
 # 5. Import Workers
 # ─────────────────────────────────────────────
 
+# --- Workers Integration ---
 from workers.retrieval import run as retrieval_run
 from workers.policy_tool import run as policy_tool_run
 from workers.synthesis import run as synthesis_run

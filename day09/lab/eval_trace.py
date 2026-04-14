@@ -20,6 +20,9 @@ import sys
 import argparse
 from datetime import datetime
 from typing import Optional
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Import graph
 sys.path.insert(0, os.path.dirname(__file__))
