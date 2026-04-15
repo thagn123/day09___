@@ -1,10 +1,12 @@
 # Báo Cáo Nhóm — Lab Day 10: Data Pipeline & Data Observability
 
-**Tên nhóm:** Đào Quang Thắng (cá nhân)  
+**Tên nhóm:** Nhóm Day 10  
 **Thành viên:**
 | Tên | Vai trò (Day 10) | Email |
 |-----|------------------|-------|
-| Đào Quang Thắng | Ingestion / Cleaning / Embed / Monitoring / Docs Owner | thang.dao@student |
+| Đào Quang Thắng | **Ingestion Owner** + **Monitoring / Docs Owner** | thang.dao@student |
+| Phạm Hải Đăng | **Embed Owner** (Chroma collection, idempotency, eval) | dang.pham@student |
+| Phạm Hoàng Kim Liên | **Cleaning / Quality Owner** (cleaning_rules.py, expectations.py, quarantine) | lien.pham@student |
 
 **Ngày nộp:** 2026-04-15  
 **Repo:** Lecture-Day-08-09-10-main  
@@ -48,11 +50,11 @@ Tôi thêm **3 rule mới** và **2 expectation mới**:
 
 | Rule / Expectation mới (tên ngắn) | Trước (số liệu) | Sau / khi inject (số liệu) | Chứng cứ (log / CSV / commit) |
 |-----------------------------------|------------------|-----------------------------|-------------------------------|
-| R1: BOM/zero-width strip | Nếu inject BOM: chunk_text chứa `\ufeff` | Sau clean: BOM bị loại, text sạch | `cleaning_rules.py` line 137-141 |
-| R2: Whitespace normalize | chunk có multi-space/tab: dedupe miss | Sau normalize: collapse → dedupe chính xác hơn | `cleaning_rules.py` line 144-146 |
-| R3: Minimum meaningful content (≤10 alphanum) | chunk gần-rỗng lọt qua "missing_chunk_text" | quarantine thêm dòng `insufficient_meaningful_content` | `cleaning_rules.py` line 150-153 |
-| E7: unique_chunk_id (halt) | Nếu inject duplicate chunk_id: upsert mất data | halt pipeline, `duplicate_chunk_ids>0` | `expectations.py` line 115-128 |
-| E8: no_bom_zero_width_chars (warn) | Sau inject BOM vẫn còn trong cleaned | warn, `rows_with_bom>0` | `expectations.py` line 131-145 |
+| R1: BOM/zero-width strip | Nếu inject BOM: chunk_text chứa `\ufeff` | Sau clean: BOM bị loại, text sạch | `cleaning_rules.py` — Phạm Hoàng Kim Liên |
+| R2: Whitespace normalize | chunk có multi-space/tab: dedupe miss | Sau normalize: collapse → dedupe chính xác hơn | `cleaning_rules.py` — Phạm Hoàng Kim Liên |
+| R3: Minimum meaningful content (≤10 alphanum) | chunk gần-rỗng lọt qua "missing_chunk_text" | quarantine thêm dòng `insufficient_meaningful_content` | `cleaning_rules.py` — Phạm Hoàng Kim Liên |
+| E7: unique_chunk_id (halt) | Nếu inject duplicate chunk_id: upsert mất data | halt pipeline, `duplicate_chunk_ids>0` | `expectations.py` — Phạm Hoàng Kim Liên |
+| E8: no_bom_zero_width_chars (warn) | Sau inject BOM vẫn còn trong cleaned | warn, `rows_with_bom>0` | `expectations.py` — Phạm Hoàng Kim Liên |
 
 **Rule chính (baseline + mở rộng):**
 

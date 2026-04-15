@@ -49,11 +49,11 @@ flowchart LR
 
 | Thành phần | Input | Output | Owner nhóm |
 |------------|-------|--------|------------|
-| Ingest | `data/raw/policy_export_dirty.csv` | Raw rows (list dict) + log `raw_records` | Đào Quang Thắng |
-| Transform | Raw rows | Cleaned rows + Quarantine CSV | Đào Quang Thắng |
-| Quality | Cleaned rows | Expectation results (OK/FAIL) + halt decision | Đào Quang Thắng |
-| Embed | Cleaned CSV | ChromaDB collection `day10_kb` (upsert + prune) | Đào Quang Thắng |
-| Monitor | Manifest JSON | Freshness status (PASS/WARN/FAIL) | Đào Quang Thắng |
+| Ingest | `data/raw/policy_export_dirty.csv` | Raw rows (list dict) + log `raw_records` | **Đào Quang Thắng** |
+| Transform | Raw rows | Cleaned rows + Quarantine CSV | **Phạm Hoàng Kim Liên** |
+| Quality | Cleaned rows | Expectation results (OK/FAIL) + halt decision | **Phạm Hoàng Kim Liên** |
+| Embed | Cleaned CSV | ChromaDB collection `day10_kb` (upsert + prune) | **Phạm Hải Đăng** |
+| Monitor | Manifest JSON | Freshness status (PASS/WARN/FAIL) | **Đào Quang Thắng** |
 
 ---
 
